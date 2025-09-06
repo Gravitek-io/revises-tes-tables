@@ -19,7 +19,7 @@ const QUESTION_OPTIONS = [5, 10, 15, 20, 25, 30];
 export default function ConfigPage() {
   const [settings, setSettings] = useState<GameSettings>({
     numberOfQuestions: 10,
-    selectedTables: [2, 3, 4, 5],
+    selectedTables: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
   });
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
@@ -64,7 +64,7 @@ export default function ConfigPage() {
   const handleReset = () => {
     const defaultSettings = {
       numberOfQuestions: 10,
-      selectedTables: [2, 3, 4, 5],
+      selectedTables: [1, 2, 3, 4, 5, 6, 7, 8, 9],
     };
     setSettings(defaultSettings);
     setHasChanges(true);

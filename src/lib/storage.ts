@@ -8,7 +8,7 @@ const STORAGE_KEYS = {
 
 const DEFAULT_SETTINGS: GameSettings = {
   numberOfQuestions: 10,
-  selectedTables: [2, 3, 4, 5],
+  selectedTables: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
 }
 
 export class GameStorage {
