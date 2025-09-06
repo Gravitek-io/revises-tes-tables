@@ -169,63 +169,6 @@ export default function ConfigPage() {
                 </button>
               ))}
             </div>
-
-            {/* Quick Select */}
-            <div className="mt-6">
-              <h3 className="text-white/80 font-medium mb-3">
-                Sélections rapides
-              </h3>
-              <div className="flex flex-wrap gap-3">
-                <button
-                  onClick={() => {
-                    setSettings((prev) => ({
-                      ...prev,
-                      selectedTables: [2, 3, 4, 5],
-                    }));
-                    setHasChanges(true);
-                  }}
-                  className="bg-white/10 hover:bg-white/20 text-white/80 px-4 py-2 rounded-lg text-sm transition-all duration-300"
-                >
-                  Faciles (2-5)
-                </button>
-                <button
-                  onClick={() => {
-                    setSettings((prev) => ({
-                      ...prev,
-                      selectedTables: [6, 7, 8, 9],
-                    }));
-                    setHasChanges(true);
-                  }}
-                  className="bg-white/10 hover:bg-white/20 text-white/80 px-4 py-2 rounded-lg text-sm transition-all duration-300"
-                >
-                  Moyennes (6-9)
-                </button>
-                <button
-                  onClick={() => {
-                    setSettings((prev) => ({
-                      ...prev,
-                      selectedTables: [10, 11, 12],
-                    }));
-                    setHasChanges(true);
-                  }}
-                  className="bg-white/10 hover:bg-white/20 text-white/80 px-4 py-2 rounded-lg text-sm transition-all duration-300"
-                >
-                  Difficiles (10-12)
-                </button>
-                <button
-                  onClick={() => {
-                    setSettings((prev) => ({
-                      ...prev,
-                      selectedTables: AVAILABLE_TABLES,
-                    }));
-                    setHasChanges(true);
-                  }}
-                  className="bg-white/10 hover:bg-white/20 text-white/80 px-4 py-2 rounded-lg text-sm transition-all duration-300"
-                >
-                  Toutes
-                </button>
-              </div>
-            </div>
           </div>
 
           {/* Preview */}
