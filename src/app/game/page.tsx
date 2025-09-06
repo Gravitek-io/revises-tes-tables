@@ -222,7 +222,7 @@ export default function GamePage() {
           </form>
 
           <div className="mt-6 text-white/60 text-sm">
-            Appuie sur Entrée pour valider ta réponse
+            Appuies sur Entrée pour valider ta réponse
           </div>
         </div>
 
@@ -272,8 +272,8 @@ export default function GamePage() {
           <p className="text-white/80 text-sm">
             {streak >= 3 &&
               `🔥 ${streak} bonnes réponses d'affilée ! Tu es en feu !`}
-            {streak < 3 && streak > 0 && `Continue comme ça ! 💪`}
-            {streak === 0 && `Concentre-toi bien ! 🎯`}
+            {streak < 3 && streak > 0 && `Continues comme ça ! 💪`}
+            {streak === 0 && `Concentres-toi bien ! 🎯`}
           </p>
         </div>
       </div>
