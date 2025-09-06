@@ -1,13 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Home, RotateCcw, Target, Clock, Award, TrendingUp, Frown, Smile } from 'lucide-react'
 import { GameEngine } from '@/lib/game'
 import { GameSession, Question } from '@/types'
 
-export default function ResultsPage() {
+function ResultsContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [session, setSession] = useState<GameSession | null>(null)
@@ -212,5 +212,17 @@ export default function ResultsPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function ResultsPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-white border-t-transparent"></div>
+      </div>
+    }>
+      <ResultsContent />
+    </Suspense>
   )
 }
