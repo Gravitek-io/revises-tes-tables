@@ -1,28 +1,28 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import Link from 'next/link'
-import { Play, Settings, BarChart3, Sparkles, Calculator } from 'lucide-react'
-import { GameStorage } from '@/lib/storage'
-import { GameSettings, SessionStats } from '@/types'
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { Play, Settings, BarChart3, Sparkles, Calculator } from "lucide-react";
+import { GameStorage } from "@/lib/storage";
+import { GameSettings, SessionStats } from "@/types";
 
 export default function HomePage() {
-  const [settings, setSettings] = useState<GameSettings | null>(null)
-  const [stats, setStats] = useState<SessionStats | null>(null)
-  const [isLoaded, setIsLoaded] = useState(false)
+  const [settings, setSettings] = useState<GameSettings | null>(null);
+  const [stats, setStats] = useState<SessionStats | null>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    setSettings(GameStorage.getSettings())
-    setStats(GameStorage.getStats())
-    setIsLoaded(true)
-  }, [])
+    setSettings(GameStorage.getSettings());
+    setStats(GameStorage.getStats());
+    setIsLoaded(true);
+  }, []);
 
   if (!isLoaded) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-4 border-white border-t-transparent"></div>
       </div>
-    )
+    );
   }
 
   return (
@@ -51,20 +51,26 @@ export default function HomePage() {
             </h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
               <div>
-                <div className="text-2xl font-bold text-white">{stats.totalSessions}</div>
+                <div className="text-2xl font-bold text-white">
+                  {stats.totalSessions}
+                </div>
                 <div className="text-white/70 text-sm">Sessions</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-green-300">{stats.totalCorrectAnswers}</div>
+                <div className="text-2xl font-bold text-green-300">
+                  {stats.totalCorrectAnswers}
+                </div>
                 <div className="text-white/70 text-sm">Bonnes réponses</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-blue-300">{Math.round(stats.averageScore)}%</div>
+                <div className="text-2xl font-bold text-blue-300">
+                  {Math.round(stats.averageScore)}%
+                </div>
                 <div className="text-white/70 text-sm">Score moyen</div>
               </div>
               <div>
                 <div className="text-2xl font-bold text-yellow-300">
-                  {stats.strongestTable ? `×${stats.strongestTable}` : '---'}
+                  {stats.strongestTable ? `×${stats.strongestTable}` : "---"}
                 </div>
                 <div className="text-white/70 text-sm">Table forte</div>
               </div>
@@ -86,7 +92,8 @@ export default function HomePage() {
           {settings && (
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-white/80 text-center slide-up">
               <p className="text-sm">
-                {settings.numberOfQuestions} questions • Tables: {settings.selectedTables.join(', ')}
+                {settings.numberOfQuestions} questions • Tables:{" "}
+                {settings.selectedTables.join(", ")}
               </p>
             </div>
           )}
@@ -113,9 +120,12 @@ export default function HomePage() {
         {!stats || stats.totalSessions === 0 ? (
           <div className="mt-8 text-center">
             <div className="bg-gradient-to-r from-purple-400/20 to-pink-400/20 backdrop-blur-sm rounded-xl p-6 slide-up">
-              <h3 className="text-white font-semibold mb-2">Première visite ? 🎉</h3>
+              <h3 className="text-white font-semibold mb-2">
+                Première visite ? 🎉
+              </h3>
               <p className="text-white/80 text-sm">
-                Configure d&apos;abord tes paramètres, puis commence à réviser tes tables !
+                Configure d&apos;abord tes paramètres, puis commence à réviser
+                tes tables !
               </p>
             </div>
           </div>
@@ -127,6 +137,24 @@ export default function HomePage() {
           </div>
         )}
       </div>
+
+      <div className="pt-16 text-center text-white/80 text-xs">
+        <a
+          href="https://gravitek.io"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-white/80 hover:underline"
+        >
+          Gravitek
+        </a>{" "}
+        -{" "}
+        <a
+          href="mailto:hello@gravitek.io"
+          className="text-white/80 hover:underline"
+        >
+          Nous contacter
+        </a>
+      </div>
     </div>
-  )
+  );
 }
