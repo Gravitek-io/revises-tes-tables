@@ -1,108 +1,114 @@
-'use client'
+"use client";
 
-import { useState, useEffect, useRef } from 'react'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import { ArrowLeft, Clock, Target, Check, X, Zap } from 'lucide-react'
-import { toast } from 'react-toastify'
-import { GameStorage } from '@/lib/storage'
-import { GameEngine } from '@/lib/game'
-import { Question, GameSession, GameSettings } from '@/types'
+import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { ArrowLeft, Clock, Target, Check, X, Zap } from "lucide-react";
+import { toast } from "react-toastify";
+import { GameStorage } from "@/lib/storage";
+import { GameEngine } from "@/lib/game";
+import { Question, GameSession, GameSettings } from "@/types";
 
 export default function GamePage() {
-  const router = useRouter()
-  const inputRef = useRef<HTMLInputElement>(null)
-  
-  const [settings, setSettings] = useState<GameSettings | null>(null)
-  const [questions, setQuestions] = useState<Question[]>([])
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
-  const [userAnswer, setUserAnswer] = useState('')
-  const [sessionStartTime, setSessionStartTime] = useState<number>(0)
-  const [questionStartTime, setQuestionStartTime] = useState<number>(0)
-  const [isLoaded, setIsLoaded] = useState(false)
-  const [showFeedback, setShowFeedback] = useState(false)
-  const [isCorrect, setIsCorrect] = useState(false)
-  const [streak, setStreak] = useState(0)
+  const router = useRouter();
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const [settings, setSettings] = useState<GameSettings | null>(null);
+  const [questions, setQuestions] = useState<Question[]>([]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [userAnswer, setUserAnswer] = useState("");
+  const [sessionStartTime, setSessionStartTime] = useState<number>(0);
+  const [questionStartTime, setQuestionStartTime] = useState<number>(0);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [showFeedback, setShowFeedback] = useState(false);
+  const [isCorrect, setIsCorrect] = useState(false);
+  const [streak, setStreak] = useState(0);
 
   useEffect(() => {
-    const gameSettings = GameStorage.getSettings()
-    setSettings(gameSettings)
-    
-    const generatedQuestions = GameEngine.generateQuestions(gameSettings)
-    setQuestions(generatedQuestions)
-    
-    setSessionStartTime(Date.now())
-    setQuestionStartTime(Date.now())
-    setIsLoaded(true)
-  }, [])
+    const gameSettings = GameStorage.getSettings();
+    setSettings(gameSettings);
+
+    const generatedQuestions = GameEngine.generateQuestions(gameSettings);
+    setQuestions(generatedQuestions);
+
+    setSessionStartTime(Date.now());
+    setQuestionStartTime(Date.now());
+    setIsLoaded(true);
+  }, []);
 
   useEffect(() => {
     if (isLoaded && inputRef.current) {
-      inputRef.current.focus()
+      inputRef.current.focus();
     }
-  }, [isLoaded, currentQuestionIndex])
+  }, [isLoaded, currentQuestionIndex]);
 
-  const currentQuestion = questions[currentQuestionIndex]
-  const progress = questions.length > 0 ? ((currentQuestionIndex + 1) / questions.length) * 100 : 0
+  const currentQuestion = questions[currentQuestionIndex];
+  const progress =
+    questions.length > 0
+      ? ((currentQuestionIndex + 1) / questions.length) * 100
+      : 0;
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    
-    if (!currentQuestion || userAnswer.trim() === '') return
+    e.preventDefault();
 
-    const answerTime = Math.round((Date.now() - questionStartTime) / 1000)
-    const userNum = parseInt(userAnswer)
-    const correct = userNum === currentQuestion.answer
+    if (!currentQuestion || userAnswer.trim() === "") return;
+
+    const answerTime = Math.round((Date.now() - questionStartTime) / 1000);
+    const userNum = parseInt(userAnswer);
+    const correct = userNum === currentQuestion.answer;
 
     // Update question with user response
-    const updatedQuestions = [...questions]
+    const updatedQuestions = [...questions];
     updatedQuestions[currentQuestionIndex] = {
       ...currentQuestion,
       userAnswer: userNum,
       isCorrect: correct,
-      timeToAnswer: answerTime
-    }
-    setQuestions(updatedQuestions)
+      timeToAnswer: answerTime,
+    };
+    setQuestions(updatedQuestions);
 
     // Show feedback
-    setIsCorrect(correct)
-    setShowFeedback(true)
+    setIsCorrect(correct);
+    setShowFeedback(true);
 
     // Update streak
     if (correct) {
-      setStreak(prev => prev + 1)
-      toast.success('Bravo ! 🎉', {
+      setStreak((prev) => prev + 1);
+      toast.success("Bravo ! 🎉", {
         autoClose: 1000,
-        hideProgressBar: true
-      })
+        hideProgressBar: true,
+      });
     } else {
-      setStreak(0)
+      setStreak(0);
       toast.error(`Oups! La réponse était ${currentQuestion.answer}`, {
         autoClose: 2000,
-      })
+      });
     }
 
     // Move to next question after feedback
-    setTimeout(() => {
-      setShowFeedback(false)
-      
-      if (currentQuestionIndex < questions.length - 1) {
-        setCurrentQuestionIndex(prev => prev + 1)
-        setUserAnswer('')
-        setQuestionStartTime(Date.now())
-      } else {
-        // Game finished, save session and redirect
-        finishGame(updatedQuestions)
-      }
-    }, correct ? 1500 : 2500)
-  }
+    setTimeout(
+      () => {
+        setShowFeedback(false);
+
+        if (currentQuestionIndex < questions.length - 1) {
+          setCurrentQuestionIndex((prev) => prev + 1);
+          setUserAnswer("");
+          setQuestionStartTime(Date.now());
+        } else {
+          // Game finished, save session and redirect
+          finishGame(updatedQuestions);
+        }
+      },
+      correct ? 1500 : 2500
+    );
+  };
 
   const finishGame = (finalQuestions: Question[]) => {
-    if (!settings) return
+    if (!settings) return;
 
-    const sessionEndTime = Date.now()
-    const { correct, incorrect } = GameEngine.calculateScore(finalQuestions)
-    
+    const sessionEndTime = Date.now();
+    const { correct, incorrect } = GameEngine.calculateScore(finalQuestions);
+
     const session: GameSession = {
       id: `session-${sessionEndTime}`,
       date: new Date().toISOString(),
@@ -111,15 +117,15 @@ export default function GamePage() {
       correctAnswers: correct,
       incorrectAnswers: incorrect,
       completedAt: new Date().toISOString(),
-      duration: Math.round((sessionEndTime - sessionStartTime) / 1000)
-    }
+      duration: Math.round((sessionEndTime - sessionStartTime) / 1000),
+    };
 
-    GameStorage.saveSession(session)
-    
+    GameStorage.saveSession(session);
+
     // Navigate to results with session data
-    const sessionData = encodeURIComponent(JSON.stringify(session))
-    router.push(`/results?session=${sessionData}`)
-  }
+    const sessionData = encodeURIComponent(JSON.stringify(session));
+    router.push(`/results?session=${sessionData}`);
+  };
 
   if (!isLoaded || !currentQuestion) {
     return (
@@ -129,7 +135,7 @@ export default function GamePage() {
           <p className="text-white/80">Préparation de ta session...</p>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -159,7 +165,7 @@ export default function GamePage() {
         {/* Progress Bar */}
         <div className="mb-8">
           <div className="bg-white/10 rounded-full h-3 overflow-hidden">
-            <div 
+            <div
               className="bg-gradient-to-r from-green-400 to-blue-500 h-full transition-all duration-300 ease-out"
               style={{ width: `${progress}%` }}
             />
@@ -169,19 +175,21 @@ export default function GamePage() {
         {/* Question Card */}
         <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-8 mb-8 text-center relative overflow-hidden">
           {showFeedback && (
-            <div className={`absolute inset-0 flex items-center justify-center ${
-              isCorrect ? 'bg-green-500/90' : 'bg-red-500/90'
-            } backdrop-blur-sm transition-all duration-300`}>
+            <div
+              className={`absolute inset-0 flex items-end justify-center ${
+                isCorrect ? "bg-green-500/90" : "bg-red-500/90"
+              } backdrop-blur-sm transition-all duration-300`}
+            >
               <div className="text-center">
                 {isCorrect ? (
                   <>
-                    <Check className="h-16 w-16 text-white mx-auto mb-4" />
                     <p className="text-2xl font-bold text-white">Excellent !</p>
                   </>
                 ) : (
                   <>
-                    <X className="h-16 w-16 text-white mx-auto mb-4" />
-                    <p className="text-2xl font-bold text-white">La réponse était {currentQuestion.answer}</p>
+                    <p className="text-2xl font-bold text-white">
+                      La réponse était {currentQuestion.answer}
+                    </p>
                   </>
                 )}
               </div>
@@ -203,7 +211,7 @@ export default function GamePage() {
               disabled={showFeedback}
               autoFocus
             />
-            
+
             <button
               type="submit"
               disabled={!userAnswer.trim() || showFeedback}
@@ -222,21 +230,38 @@ export default function GamePage() {
         <div className="grid grid-cols-3 gap-4 text-center">
           <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
             <div className="text-green-300 text-2xl font-bold">
-              {questions.slice(0, currentQuestionIndex).filter(q => q.isCorrect).length}
+              {
+                questions
+                  .slice(0, currentQuestionIndex)
+                  .filter((q) => q.isCorrect).length
+              }
             </div>
             <div className="text-white/70 text-sm">Bonnes</div>
           </div>
-          
+
           <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
             <div className="text-red-300 text-2xl font-bold">
-              {questions.slice(0, currentQuestionIndex).filter(q => q.isCorrect === false).length}
+              {
+                questions
+                  .slice(0, currentQuestionIndex)
+                  .filter((q) => q.isCorrect === false).length
+              }
             </div>
             <div className="text-white/70 text-sm">Mauvaises</div>
           </div>
-          
+
           <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
             <div className="text-blue-300 text-2xl font-bold">
-              {currentQuestionIndex > 0 ? Math.round((questions.slice(0, currentQuestionIndex).filter(q => q.isCorrect).length / currentQuestionIndex) * 100) : 0}%
+              {currentQuestionIndex > 0
+                ? Math.round(
+                    (questions
+                      .slice(0, currentQuestionIndex)
+                      .filter((q) => q.isCorrect).length /
+                      currentQuestionIndex) *
+                      100
+                  )
+                : 0}
+              %
             </div>
             <div className="text-white/70 text-sm">Réussite</div>
           </div>
@@ -245,12 +270,13 @@ export default function GamePage() {
         {/* Encouragement */}
         <div className="mt-6 text-center">
           <p className="text-white/80 text-sm">
-            {streak >= 3 && `🔥 ${streak} bonnes réponses d'affilée ! Tu es en feu !`}
+            {streak >= 3 &&
+              `🔥 ${streak} bonnes réponses d'affilée ! Tu es en feu !`}
             {streak < 3 && streak > 0 && `Continue comme ça ! 💪`}
             {streak === 0 && `Concentre-toi bien ! 🎯`}
           </p>
         </div>
       </div>
     </div>
-  )
+  );
 }
