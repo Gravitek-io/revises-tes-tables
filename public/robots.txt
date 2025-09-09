@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://revises-tes-tables.gravitek.io/sitemap.xml
+
+# Block access to API routes (even though we don't have any currently)
+Disallow: /api/
+
+# Allow all search engines to crawl the site
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Crawl delay (optional, helps prevent overloading the server)
+Crawl-delay: 1

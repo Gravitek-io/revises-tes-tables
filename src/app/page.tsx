@@ -37,18 +37,15 @@ export default function HomePage() {
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-4 text-balance">
             Tables de Multiplication
           </h1>
-          <p className="text-xl text-white/80 text-balance">
-            Révise tes tables de façon ludique et amusante !
-          </p>
         </div>
 
         {/* Quick Stats */}
         {stats && stats.totalSessions > 0 && (
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 mb-8 bounce-in">
-            <h3 className="text-white font-semibold mb-4 flex items-center">
+            <h2 className="text-white font-semibold mb-4 flex items-center">
               <BarChart3 className="h-5 w-5 mr-2" />
               Tes derniers progrès
-            </h3>
+            </h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
               <div>
                 <div className="text-2xl font-bold text-white">
@@ -120,9 +117,9 @@ export default function HomePage() {
         {!stats || stats.totalSessions === 0 ? (
           <div className="mt-8 text-center">
             <div className="bg-gradient-to-r from-purple-400/20 to-pink-400/20 backdrop-blur-sm rounded-xl p-6 slide-up">
-              <h3 className="text-white font-semibold mb-2">
+              <h2 className="text-white font-semibold mb-2">
                 Première visite ? 🎉
-              </h3>
+              </h2>
               <p className="text-white/80 text-sm">
                 Configure d&apos;abord tes paramètres, puis commence à réviser
                 tes tables !
@@ -138,23 +135,34 @@ export default function HomePage() {
         )}
       </div>
 
-      <div className="pt-16 text-center text-white/80 text-xs">
-        <a
-          href="https://gravitek.io"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-white/80 hover:underline"
-        >
-          Gravitek
-        </a>{" "}
-        -{" "}
-        <a
-          href="mailto:hello@gravitek.io"
-          className="text-white/80 hover:underline"
-        >
-          Nous contacter
-        </a>
-      </div>
+      <footer className="pt-16 text-center">
+        <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 mb-4">
+          <h2 className="text-white font-semibold mb-3 text-lg">
+            Application développée par Gravitek
+          </h2>
+          <p className="text-white/70 text-sm mb-4">
+            Outil éducatif gratuit et open source pour l&apos;apprentissage des
+            mathématiques
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-sm">
+            <a
+              href="https://gravitek.io"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-300 hover:text-blue-200 font-medium transition-colors"
+            >
+              🏢 Découvrir Gravitek
+            </a>
+
+            <a
+              href="mailto:hello@gravitek.io"
+              className="text-yellow-300 hover:text-yellow-200 font-medium transition-colors"
+            >
+              ✉️ Nous contacter
+            </a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

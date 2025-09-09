@@ -10,8 +10,67 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Tables de Multiplication - Révisions Ludiques",
-  description: "Application ludique pour réviser les tables de multiplication",
+  metadataBase: new URL("https://revises-tes-tables.gravitek.io"),
+  title: {
+    default: "Tables de Multiplication - Révisions Ludiques | Gravitek",
+    template: "%s | Tables de Multiplication - Gravitek",
+  },
+  description:
+    "Application ludique gratuite pour réviser les tables de multiplication. Outil éducatif interactif pour enfants et étudiants. Développé par Gravitek.",
+  keywords: [
+    "tables de multiplication",
+    "mathématiques",
+    "éducation",
+    "enfants",
+    "révisions",
+    "apprentissage",
+    "gratuit",
+    "exercices",
+    "multiplication",
+    "calcul mental",
+  ],
+  authors: [{ name: "Gravitek", url: "https://gravitek.io" }],
+  creator: "Gravitek",
+  publisher: "Gravitek",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  openGraph: {
+    type: "website",
+    locale: "fr_FR",
+    url: "https://revises-tes-tables.gravitek.io",
+    siteName: "Tables de Multiplication - Gravitek",
+    title: "Tables de Multiplication - Révisions Ludiques",
+    description:
+      "Application ludique gratuite pour réviser les tables de multiplication. Outil éducatif interactif pour enfants et étudiants.",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Tables de Multiplication - Application éducative Gravitek",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Tables de Multiplication - Révisions Ludiques",
+    description:
+      "Application ludique gratuite pour réviser les tables de multiplication",
+    images: ["/og-image.png"],
+    creator: "@gravitek_io",
+  },
+  alternates: {
+    canonical: "https://revises-tes-tables.gravitek.io",
+  },
 };
 
 export default function RootLayout({
