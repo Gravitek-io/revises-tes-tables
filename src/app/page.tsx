@@ -37,6 +37,9 @@ export default function HomePage() {
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-4 text-balance">
             Tables de Multiplication
           </h1>
+          <p className="text-xl text-white/80 text-balance">
+            Révises tes tables de multiplication de façon ludique et amusante !
+          </p>
         </div>
 
         {/* Quick Stats */}
